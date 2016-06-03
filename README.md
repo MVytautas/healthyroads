@@ -1,5 +1,10 @@
 # Bad Roads
 
+## Todo
+
+- [ ] Prepare workspace
+- [ ] Define workflow
+
 ## How to install ionic
 
 http://ionicframework.com/getting-started/
