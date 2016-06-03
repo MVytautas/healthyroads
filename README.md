@@ -3,6 +3,8 @@
 ## Workflow
 
 1. Prepare your environment
+  * ```cd app```
+  * ```ionic serve```
 2. Checkout a new branch with a name of your feature/fix from **master**
 3. Work on your branch (but don't rebase commits from master)
 4. Make a Pull Request to the **master**
