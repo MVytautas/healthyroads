@@ -4,6 +4,8 @@
 
 - [ ] Prepare workspace
 - [ ] Define workflow
+- [ ] Prepare tickets
+- [ ] Have fun
 
 ## How to install ionic
 
