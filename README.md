@@ -1,5 +1,37 @@
 # Bad Roads
 
+## Workflow
+
+1. Clone git repository
+2. Make a new branch with a name of your feature/fix
+3. Work on your branch (but don't rebase commits from master)
+4. Make a Pull Request
+5. Ask somebody to review and merge it
+6. Resolve conflicts
+7. Test and be happy ;)
+
+### How to install ionic
+
+http://ionicframework.com/getting-started/
+
+### Technologies used
+
+- Angular
+- Ionic
+- NPM
+- Bower
+- OpenLayers
+
+## Todo
+
+- [ ] Prepare workspace
+- [x] Define workflow
+- [ ] Prepare tickets
+- [ ] Run app on phone
+- [ ] Have fun
+
+## App concept
+
 An app which tracks possible danger zones (bad parts) of the road using built-in phone accelerometer,
 and maps the acquired data to the location at the map using GPS.
 
@@ -10,18 +42,14 @@ Peace for the roads.
 Peace for the car health.  
 Peace to our wallets.
 
-## Use case
+### Use case
 
 - Install app on Android/iOS
 - Run
 - Attach your phone inside a car
 - Watch as it tracks the bad parts of the road in the real time
 
-## Name ideas
-
-- CarBeat Monitor (analogy to the Heartbeat Monitor)
-
-## Basic feature overview
+### Basic feature overview
 
 - Track GPS data
   - Read current location
@@ -31,22 +59,6 @@ Peace to our wallets.
 - If yes, connect current location data with the data about a movement
 - Notify user about a detection of a possible danger zone
 
-## Todo
+## Name ideas
 
-- [ ] Prepare workspace
-- [ ] Define workflow
-- [ ] Prepare tickets
-- [ ] Run app on phone
-- [ ] Have fun
-
-## How to install ionic
-
-http://ionicframework.com/getting-started/
-
-## Technologies
-
-- Angular
-- Ionic
-- NPM
-- Bower
-- OpenLayers
+- CarBeat Monitor (analogy to the Heartbeat Monitor)
