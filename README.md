@@ -49,4 +49,4 @@ http://ionicframework.com/getting-started/
 - Ionic
 - NPM
 - Bower
-- Open layers
+- OpenLayers
