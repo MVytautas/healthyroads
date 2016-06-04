@@ -5,7 +5,7 @@ angular.module('starter.controllers', ['ngCordova',
 
 })
 
-.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval) {
+.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval, $rootScope) {
   // watch Acceleration options
   $scope.options = settings.getOptions();
   // Current measurements
@@ -29,12 +29,12 @@ angular.module('starter.controllers', ['ngCordova',
    
       // Device motion configuration
       $scope.watch = $cordovaDeviceMotion.watchAcceleration($scope.options);
-   
+
       // Device motion initilaization
       $scope.watch.then(null, function(error) {
           console.log('Error');
       }, function(result) {
-   
+
           // DATA FROM ACCELEROMETER 
           $scope.measurements.x = result.x;
           $scope.measurements.y = result.y;
@@ -50,7 +50,7 @@ angular.module('starter.controllers', ['ngCordova',
       });     
   };
   // Stop watching method
-  $scope.stopWatching = function() {  
+  $scope.stopWatching = function() {
       $scope.watch.clearWatch();
   };
 
@@ -91,7 +91,12 @@ angular.module('starter.controllers', ['ngCordova',
    
   };
 
-
+  // Options update event handler
+  $rootScope.$on('options_update', function(evt) {
+      $scope.options = settings.getOptions();
+      $scope.watch = $cordovaDeviceMotion.watchAcceleration($scope.options);
+      $scope.$digest();
+  });
 
 
 	$(window).on("resize.doResize", function (){
@@ -217,11 +222,20 @@ angular.module('starter.controllers', ['ngCordova',
 
 })
 
-.controller('SettingsCtrl', ['$scope', 'settings', function($scope, settings) {
-  $scope.frequency = settings.getFrequncy();  
+.controller('SettingsCtrl', ['$scope', 'settings', '$rootScope', function($scope, settings, $rootScope) {
+  $scope.frequency = settings.getFrequency();  
   $scope.deviation = settings.getDiviation();
-  $scope.setOptions = function() {
-    settings.setFrequency($scope.frequency); 
-    settings.setDeviation($scope.deviation); 
-  };  
+
+  $scope.setFrquency = function(frq) {
+    console.log(frq);
+    settings.setFrequency(frq);
+    $rootScope.$broadcast('options_update');
+  }
+
+  $scope.setDiv = function(div) {
+    console.log(div);
+    settings.setDiviation(div);
+    $rootScope.$broadcast('options_update');
+  }
+
 }]);

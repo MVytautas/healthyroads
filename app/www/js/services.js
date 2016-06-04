@@ -10,7 +10,7 @@ angular.module('starter.services', [])
     add_data : function(dt) {
       // TODO serilize data to JSON
       data.append(dt);
-      $rootScope.broadcast('data_processor:data_in');
+      $rootScope.$broadcast('data_processor:data_in');
     }, 
     get_data : function() {
       return data;
@@ -20,29 +20,27 @@ angular.module('starter.services', [])
 
 .factory('settings', ['$rootScope', function($rootScope) {
   // Frequency default 100
-  var frequency = 100;
   var options = { 
       frequency: 100, // Measure every 100ms
       deviation : 25  // We'll use deviation to determine the shake event, best values in the range between 25 and 30
   };
   return {
-    setFrequncy : function(frqncy) {
+    setFrequency : function(frqncy) {
       options.frequency = frqncy;
-      $rootScope.broadcast('settings:frequency_changed');
     },
-    getFrequncy : function() {
+    getFrequency : function() {
       return options.frequency;
     }, 
     getOptions : function() {
       return options;
     },
-    setDeviation : function(dev) {
+    setDiviation : function(dev) {
       options.deviation = dev;
     },
     getDiviation : function() {
       return options.deviation;
     } 
-  };
+  }
 }]);
 
 
