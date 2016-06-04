@@ -23,7 +23,8 @@ angular.module('starter.controllers', ['ngCordova',
   };
 
     //Start Watching method
-  $scope.startWatching = function() {     
+  $scope.startWatching = function() {
+      $scope.attacking = true;     
    
       // Device motion configuration
       $scope.watch = $cordovaDeviceMotion.watchAcceleration(settings.getOptions());
@@ -66,6 +67,7 @@ angular.module('starter.controllers', ['ngCordova',
   };
   // Stop watching method
   $scope.stopWatching = function() {
+  	  $scope.attacking = false; 
       $scope.watch.clearWatch();
   };
 
@@ -112,32 +114,36 @@ angular.module('starter.controllers', ['ngCordova',
   });
 
 
-	$(window).on("resize.doResize", function (){
+  $(window).on("resize.doResize", function (){
       $scope.$apply(function(){
         ctx.canvas.width = window.innerWidth - 10;
-        ctx.canvas.height = window.innerHeight - window.innerHeight / 2;
+        ctx.canvas.height = 270;
       });
     });
 
 	$scope.x = 0;
 	$scope.offset = 0;
-	$scope.attacking = true;
+	$scope.attacking = false;
 	$scope.road_data = [];
 	$scope.first_hit = [];
 	$scope.last_hit = [];
     var clicked = false;
+    var start_dump = [];
+    var end_dump = [];
+    var dumps_array = [];
     var selected_frame = 0;
-    var dumb_data = [-5, 6, -7, 5, 5, -9, 5, -3, 3, 3, 6, 9, 12, 18, 19, 20, 20, 20, 20, 20];
+    var dumb_draw = false;
+    var dumb_data = [-5, 6, -7, 5, 5, -9, 5, -3, 3, 3, 6, -9, -12, -18, -19, -20, -20, -20, -20, -20];
 
-	function set_initial_data() {
-	  ctx.canvas.width = window.innerWidth - 10;
-      ctx.canvas.height = window.innerHeight / 2;
-	  var centeredHeight = ctx.canvas.height / 2;
-	  
-	  $scope.road_data.push([0, centeredHeight]);
-	  $scope.last_hit =  [0, centeredHeight];
-	  $scope.first_hit = [0, centeredHeight];
-	}
+  function set_initial_data() {
+    ctx.canvas.width = window.innerWidth - 10;
+      ctx.canvas.height = 270;
+    var centeredHeight = ctx.canvas.height / 2;
+    
+    $scope.road_data.push([0, 100]);
+    $scope.last_hit =  [0, 100];
+    $scope.first_hit = [0, 100];
+  }
 
 	var canvas  = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
@@ -145,16 +151,20 @@ angular.module('starter.controllers', ['ngCordova',
 	$scope.click = function() {
       clicked = true;
       selected_frame = $scope.x;
-      console.log('a')
 	}
 
-	$scope.upload_data = function(measurements) {
-	    var last = $scope.road_data.length-1;
-	    if($scope.road_data[last][2] != 'added') {
-	      $scope.road_data.push([$scope.x-2, $scope.road_data[0][1]]);
-	    }
-	    $scope.road_data.push([$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1], 'added']);
-	}
+  $scope.upload_data = function(measurements) {
+      var last = $scope.road_data.length-1;
+      if($scope.road_data[last][2] != 'added') {
+        $scope.road_data.push([$scope.x-2, $scope.road_data[0][1]]);
+        start_dump = [$scope.x-2, $scope.road_data[0][1]];
+      }
+      $scope.road_data.push([$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1], 'added']);
+      end_dump = [$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1], 'added'];
+      if(measurements.z > 2 || measurements.z < 2) {
+        dumb_draw = true;
+      }
+  }
 
 	$scope.start_attack = function() {
 	  $scope.attacking = !$scope.attacking;
@@ -163,37 +173,37 @@ angular.module('starter.controllers', ['ngCordova',
 
   function iterate_for_drawing() {
     for (var x = 0; x < $scope.road_data.length; x++) {
-	        ctx.beginPath();
-	        ctx.strokeStyle='#EF233C';
-	        if(x > 0) {
-	          if(x == $scope.road_data.length-1 && $scope.x >= $scope.road_data[x][0]) {
-	            var last_data = $scope.road_data[x];
-	            var over_last_data = $scope.road_data[x-1];
-	        draw(over_last_data[0], over_last_data[1], last_data[0], last_data[1]);
-	        if(last_data[1] == $scope.road_data[0][1]) {
-	          draw(last_data[0], last_data[1], $scope.x, $scope.road_data[0][1]);
-	        }
-	          } else if($scope.x >= $scope.road_data[x-1][0]) {
-	            var last_road = $scope.road_data[x-1];
-	            var road_data = $scope.road_data[x];
-	            draw(last_road[0], last_road[1], road_data[0], road_data[1]);
-	          }
-	        } else {
-	          var road_data = $scope.road_data[0];
-	          if($scope.road_data.length > 1) {
-	          var first_road = $scope.road_data[1];
-	            draw(road_data[0], road_data[1], first_road[0], first_road[1]);
-	          } else {
-	            draw(road_data[0], road_data[1], $scope.x, road_data[1]);
-	          }
+          ctx.beginPath();
+          ctx.strokeStyle='#EF233C';
+          if(x > 0) {
+            if(x == $scope.road_data.length-1 && $scope.x >= $scope.road_data[x][0]) {
+              var last_data = $scope.road_data[x];
+              var over_last_data = $scope.road_data[x-1];
+          draw(over_last_data[0], over_last_data[1], last_data[0], last_data[1]);
+          if(last_data[1] == $scope.road_data[0][1]) {
+            draw(last_data[0], last_data[1], $scope.x, $scope.road_data[0][1]);
+          }
+            } else if($scope.x >= $scope.road_data[x-1][0]) {
+              var last_road = $scope.road_data[x-1];
+              var road_data = $scope.road_data[x];
+              draw(last_road[0], last_road[1], road_data[0], road_data[1]);
+            }
+          } else {
+            var road_data = $scope.road_data[0];
+            if($scope.road_data.length > 1) {
+            var first_road = $scope.road_data[1];
+              draw(road_data[0], road_data[1], first_road[0], first_road[1]);
+            } else {
+              draw(road_data[0], road_data[1], $scope.x, road_data[1]);
+            }
 
-	      }
-	      ctx.lineWidth=2;
-		  ctx.lineCap = 'round';
-		  ctx.stroke();
-	}
-	
-	}
+          }
+          ctx.lineWidth=2;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+    }
+}
+  
 
 	function draw(x_start, y_start, x_end, y_end) {
 	  ctx.moveTo(x_start-$scope.offset, y_start);
@@ -207,42 +217,62 @@ angular.module('starter.controllers', ['ngCordova',
 	    }, 100 );
 	}
 
-	function animate() {
-	  if($scope.attacking == true) {
-	  	  if($scope.x > window.innerWidth/2) {
-	  	  	$scope.offset+=4;
-	  	  }
-	  	  if(clicked == true) {
-	          add_dumb_data();
+	  function animate() {
+	    if($scope.attacking == true) {
+	        if($scope.x > window.innerWidth/2) {
+	          $scope.offset+=4;
 	        }
-	        var last = $scope.road_data.length-1;
-	        if($scope.road_data[last][2] == 'added' && $scope.road_data[last][0] < $scope.x-1) {
-	          $scope.road_data.push([$scope.x, $scope.road_data[0][1]]);
-	        }
-	      clear_canvas();
-	      $scope.x+=4;
-	      iterate_for_drawing();
-	  }
-	    
-	}
-
-	  function add_dumb_data() {
-	    if(dumb_data.length > $scope.x-selected_frame) {
-	      var data = dumb_data[$scope.x-selected_frame];
-	      $scope.upload_data({z: data});
-	    } else {
-	      clicked = false;
+	        if(clicked == true) {
+	            add_dumb_data();
+	          }
+	          var last = $scope.road_data.length-1;
+	          if($scope.road_data[last][2] == 'added' && $scope.road_data[last][0] < $scope.x-1) {
+	            $scope.road_data.push([$scope.x, $scope.road_data[0][1]]);
+	            end_dump = [$scope.x, $scope.road_data[0][1]];
+	            dumb_draw = false;
+	            dumps_array.push([start_dump, end_dump]);
+	          }
+	        clear_canvas();
+	        $scope.x+=4;
+	        iterate_dumps();
+	        iterate_for_drawing();
 	    }
+	      
 	  }
+
+  function iterate_dumps() {
+    for(var x=0; x<dumps_array.length; x++) {
+      start = dumps_array[x][0];
+      end = dumps_array[x][1];
+      ctx.beginPath();
+      ctx.strokeStyle='black';
+      ctx.lineWidth=1;
+      ctx.moveTo(start[0]-$scope.offset, start[1]);
+      ctx.lineTo(start[0]-$scope.offset, start[1]+150);
+      ctx.lineTo(end[0]-$scope.offset,   end[1]+150);
+      ctx.lineTo(end[0]-$scope.offset,   end[1]);
+      ctx.stroke();
+
+      ctx.font = "13px Arial";
+      ctx.fillStyle='black';
+      ctx.fillText("DUMP", start[0]-$scope.offset, start[1]+165);
+    }
+  }
+
+    function add_dumb_data() {
+      if(dumb_data.length > $scope.x-selected_frame) {
+        var data = dumb_data[$scope.x-selected_frame];
+        $scope.upload_data({z: data});
+      } else {
+        clicked = false;
+      }
+    }
 
 	function clear_canvas() {
 	    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 	}
 
 	start_animation_loop();
-
-
-
 
 })
 
