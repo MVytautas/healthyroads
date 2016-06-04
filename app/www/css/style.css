@@ -8,12 +8,6 @@
   background: #EDF2F4;
 }
 
-.debug-info {
-  color: #8D99AE;
-  text-align: center;
-  width: 100%;
-}
-
 .tabs-top > .tabs,
 .tabs.tabs-top {
   bottom: 0;
@@ -52,7 +46,6 @@ ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.activated {
 }
 
 .canvas {
-  margin-top: 2rem;
   width: 100%;
 }
 
@@ -78,4 +71,29 @@ ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.activated {
 
 .tab-title {
   display: none;
+}
+
+.debug-info {
+  color: #8D99AE;
+  text-align: center;
+  width: 100%;
+}
+
+.debug-info__axis {
+  list-style-type: none;
+  margin-top: 1rem;
+}
+
+.button {
+  background: #EF233C;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.button:hover,
+.button:focus {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.button.activated {
+  color: #2B2D42;
 }

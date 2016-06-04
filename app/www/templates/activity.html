@@ -6,22 +6,21 @@
 	      Your browser does not support canvas element. Please use Chrome / Mozilla or newer Internet Explorer browser.
 	    </canvas>
         
-	    <!--<button ng-click='click()'>click</button>-->
-        <!--<div class="list">
-            <label class="item item-input">
-                <span class="input-label">Frequency</span>
-                <input type="text" placeholder="0" ng-model="options.frequency">
-            </label>
-        </div>-->
-        <!--<button class="button button-full button-positive" ng-click="startWatching()">
-            Start Measurement
-        </button>
-        <button class="button button-full button-positive" ng-click="stopWatching()">
-            Stop Measurement
-        </button>
-        <h2>X: {{measurements.x}}</h2>-->
-        <div class="debug-info">Y: {{measurements.y}}</div>
-        <!--<h2>Z: {{measurements.z}}</h2>-->
+        <section class="debug-info">
+            <button class="button" ng-click="startWatching()">
+                Start Measurement
+            </button>
+            
+            <button class="button" ng-click="stopWatching()">
+                Stop Measurement
+            </button>
+            
+            <ul class="debug-info__axis">
+                <li>X: {{measurements.x}}</li>
+                <li>Y: {{measurements.y}}</li>
+                <li>Z: {{measurements.z}}</li>
+            </ul>
+        </section>
     </ion-list>
   </ion-content>
 </ion-view>
