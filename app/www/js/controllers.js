@@ -166,7 +166,7 @@ angular.module('starter.controllers', ['ngCordova',
 	      start_dump = [$scope.x-2, $scope.road_data[0][1]];
 	    } else {
 	      dumb_draw = false;
-	      if(start_dump.length > 0 && end_dump.length) {
+	      if(start_dump.length > 0 && end_dump.length > 0) {
 	      	dumps_array.push([start_dump, end_dump]);
 		      start_dump = [];
 		      end_dump = [];
