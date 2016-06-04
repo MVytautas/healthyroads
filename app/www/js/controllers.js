@@ -145,7 +145,7 @@ angular.module('starter.controllers', ['ngCordova',
 	}
 
 	$scope.upload_data = function(measurements) {
-		$scope.road_data.push([$scope.x+1, parseInt(measurements.z*3)+$scope.road_data[0][1]]);
+		$scope.road_data.push([$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1]]);
 	}
 
 	$scope.start_attack = function() {
@@ -154,9 +154,10 @@ angular.module('starter.controllers', ['ngCordova',
 	}
 
 	function iterate_for_drawing() {
-	  ctx.beginPath();
+	  
 	  for (var x = 0; x < $scope.road_data.length; x++) {
-	    
+	  	  ctx.beginPath();
+	  	  ctx.strokeStyle='#ec5840';
 	      if(x > 0) {
 	        if(x == $scope.road_data.length-1 && $scope.x >= $scope.road_data[x][0]) {
 	          var last_data = $scope.road_data[x];
@@ -171,15 +172,19 @@ angular.module('starter.controllers', ['ngCordova',
 	      } else {
 	        var road_data = $scope.road_data[0];
 	        if($scope.road_data.length > 1) {
-	  var first_road = $scope.road_data[1];
+	  		  var first_road = $scope.road_data[1];
 	          draw(road_data[0], road_data[1], first_road[0], first_road[1]);
 	        } else {
+	          
 	          draw(road_data[0], road_data[1], $scope.x, road_data[1]);
 	        }
 
 	      }
+	      ctx.lineWidth=5;
+		  ctx.lineCap = 'round';
+		  ctx.stroke();
 	}
-	ctx.stroke();
+	
 	}
 
 	function draw(x_start, y_start, x_end, y_end) {
