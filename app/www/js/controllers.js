@@ -7,6 +7,7 @@ angular.module('starter.controllers', ['ngCordova',
 
 .controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval, $rootScope, $http) {
   // Current measurements
+  console.log("Activity controller init ");
   $scope.measurements = {
       x : null,
       y : null,
@@ -66,8 +67,10 @@ angular.module('starter.controllers', ['ngCordova',
   };
   // Stop watching method
   $scope.stopWatching = function() {
+    if (typeof $scope.watch != 'function' ) {
       $scope.watch.clearWatch();
-  };
+    }
+  }
 
   // Detect shake method      
   $scope.detectShake = function(result) { 
