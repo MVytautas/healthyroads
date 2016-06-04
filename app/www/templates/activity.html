@@ -1,6 +1,14 @@
 <ion-view view-title="Activity">
   <ion-content>
     <ion-list>
+
+    	<canvas id="canvas" class="canvas" width='1000' height='300' style="border: 1px solid black;">
+	      Your browser does not support canvas element. Please use Chrome / Mozilla or newer Internet Explorer browser.
+	    </canvas>
+	    <button ng-click='click()'>click</button>
+	    <button ng-click="start_attack()">Attack</button>
+
+
         <div class="list">
             <label class="item item-input">
                 <span class="input-label">Frequency</span>

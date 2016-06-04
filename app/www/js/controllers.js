@@ -5,7 +5,7 @@ angular.module('starter.controllers', ['ngCordova',
 
 })
 
-.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings) {
+.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval) {
   // watch Acceleration options
   $scope.options = settings.getOptions();
   // Current measurements
@@ -41,6 +41,8 @@ angular.module('starter.controllers', ['ngCordova',
           $scope.measurements.z = result.z;
           $scope.measurements.timestamp = result.timestamp;                 
          // TODO send data to service
+
+         $scope.upload_data($scope.measurements);
 
           // Detecta shake  
           $scope.detectShake(result);  
@@ -88,6 +90,121 @@ angular.module('starter.controllers', ['ngCordova',
       }           
    
   };
+
+
+
+
+
+
+
+
+	$scope.x = 0;
+	$scope.attacking = true;
+	$scope.road_data = [];
+	$scope.first_hit = [];
+	$scope.last_hit = [];
+
+	function set_initial_data() {
+	  $scope.road_data.push([0, 100]);
+	  $scope.last_hit =  [0, 100];
+	  $scope.first_hit = [0, 100];
+	}
+
+	var canvas  = document.getElementById("canvas");
+	var ctx = canvas.getContext("2d");
+
+	$scope.click = function() {
+	  $scope.road_data.push([$scope.x+5, 100]);
+	  $scope.road_data.push([$scope.x+6, 105]);
+	  $scope.road_data.push([$scope.x+7, 105]);
+	  $scope.road_data.push([$scope.x+8, 110]);
+	  $scope.road_data.push([$scope.x+9, 110]);
+	  $scope.road_data.push([$scope.x+10, 110]);
+	  $scope.road_data.push([$scope.x+11, 113]);
+	  $scope.road_data.push([$scope.x+12, 113]);
+	  $scope.road_data.push([$scope.x+13, 115]);
+	  $scope.road_data.push([$scope.x+14, 115]);
+	  $scope.road_data.push([$scope.x+15, 115]);
+	  $scope.road_data.push([$scope.x+16, 117]);
+	  $scope.road_data.push([$scope.x+17, 117]);
+	  $scope.road_data.push([$scope.x+18, 115]);
+	  $scope.road_data.push([$scope.x+19, 114]);
+	  $scope.road_data.push([$scope.x+20, 112]);
+	  $scope.road_data.push([$scope.x+21, 112]);
+	  $scope.road_data.push([$scope.x+22, 112]);
+	  $scope.road_data.push([$scope.x+23, 110]);
+	  $scope.road_data.push([$scope.x+24, 107]);
+	  $scope.road_data.push([$scope.x+25, 103]);
+	  $scope.road_data.push([$scope.x+26, 100]);
+	}
+
+	$scope.upload_data = function(measurements) {
+		$scope.road_data.push([$scope.x, measurements.z]);
+	}
+
+	$scope.start_attack = function() {
+	  console.log($scope.road_data, $scope.last_hit, $scope.first_hit, $scope.x);
+	  $scope.attacking = !$scope.attacking;
+	}
+
+	function iterate_for_drawing() {
+	  ctx.beginPath();
+	  for (var x = 0; x < $scope.road_data.length; x++) {
+	    
+	      if(x > 0) {
+	        if(x == $scope.road_data.length-1 && $scope.x >= $scope.road_data[x][0]) {
+	          var last_data = $scope.road_data[x];
+	          var over_last_data = $scope.road_data[x-1];
+	  draw(last_data[0], last_data[1], $scope.x, $scope.road_data[0][1]);
+	  draw(over_last_data[0], over_last_data[1], last_data[0], last_data[1]);
+	        } else if($scope.x >= $scope.road_data[x-1][0]) {
+	          var last_road = $scope.road_data[x-1];
+	          var road_data = $scope.road_data[x];
+	          draw(last_road[0], last_road[1], road_data[0], road_data[1]);
+	      }
+	      } else {
+	        var road_data = $scope.road_data[0];
+	        if($scope.road_data.length > 1) {
+	  var first_road = $scope.road_data[1];
+	          draw(road_data[0], road_data[1], first_road[0], first_road[1]);
+	        } else {
+	          draw(road_data[0], road_data[1], $scope.x, road_data[1]);
+	        }
+
+	      }
+	}
+	ctx.stroke();
+	}
+
+	function draw(x_start, y_start, x_end, y_end) {
+	  ctx.moveTo(x_start, y_start);
+	  ctx.lineTo(x_end, y_end);
+	}
+
+	function start_animation_loop() {
+	    set_initial_data();
+	    $scope.promise = $interval(function() {
+	        animate();
+	    }, 100 );
+	}
+
+	function animate() {
+	  if($scope.attacking == true) {
+	    clear_canvas();
+	      $scope.x++;
+	      iterate_for_drawing();
+	  }
+	    
+	}
+
+	function clear_canvas() {
+	    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+	}
+
+	start_animation_loop();
+
+
+
 
 })
 
