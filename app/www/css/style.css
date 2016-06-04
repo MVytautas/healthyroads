@@ -1,1 +1,81 @@
 /* Empty. Add your own CSS if you like */
+
+.content,
+.pane,
+.view,
+[nav-bar-transition="android"] [nav-bar="active"] .bar,
+[nav-bar-transition="android"] [nav-bar="entering"] .bar {
+  background: #EDF2F4;
+}
+
+.debug-info {
+  color: #8D99AE;
+  text-align: center;
+  width: 100%;
+}
+
+.tabs-top > .tabs,
+.tabs.tabs-top {
+  bottom: 0;
+  top: unset;
+}
+
+.tab-item .icon {
+  border-color: #EDF2F4;
+  color: #EDF2F4;
+  margin: 8px auto 0;
+}
+
+.tabs-top.tabs-striped .tab-item.tab-item-active > .badge,
+.tabs-top.tabs-striped .tab-item.tab-item-active > i,
+.tabs-top.tabs-striped .tab-item.active > .badge,
+.tabs-top.tabs-striped .tab-item.active > i,
+.tabs-top.tabs-striped .tab-item.activated > .badge,
+.tabs-top.tabs-striped .tab-item.activated > i {
+    margin-top: 7px;
+}
+
+.tabs-striped .tabs {
+  background-color: #2B2D42;
+  color: #EDF2F4;
+}
+
+ion-tabs.tabs-color-active-positive .tab-item {
+  color: #EDF2F4;
+}
+
+ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active,
+ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.active,
+ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.activated {
+  border-color: #EDF2F4;
+  color: #EDF2F4;
+}
+
+.canvas {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.item-input {
+  background: #fcfcfc;
+  border: 0;
+}
+
+.item-input:last-child {
+  border-top: 1px solid #EDF2F4;
+}
+
+.platform-android .bar .title {
+  font-size: 2rem;
+  font-weight: 300;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.list {
+  text-align: center;
+}
+
+.tab-title {
+  display: none;
+}

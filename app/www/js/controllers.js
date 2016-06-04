@@ -5,7 +5,7 @@ angular.module('starter.controllers', ['ngCordova',
 
 })
 
-.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval, $rootScope) {
+.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval, $rootScope, $http) {
   // watch Acceleration options
   $scope.options = settings.getOptions();
   // Current measurements
@@ -41,6 +41,24 @@ angular.module('starter.controllers', ['ngCordova',
           $scope.measurements.z = result.z;
           $scope.measurements.timestamp = result.timestamp;                 
          // TODO send data to service
+         $scope.coolFunction = function() {
+            $http.post('/Users/Vytautas/node-workshop/02-exercises/01-db/badroads/app', $scope.result).then(function(data) {
+              console.log("I am here");
+              $scope.msg = 'Data saved';
+            });
+            console.log("json add");
+            $scope.msg = 'Data sent: '+ JSON.stringify($scope.result);
+          };
+
+          $scope.$on('eventFired', function(event, data) {
+            $scope.coolFunction();
+          })
+
+        //$scope.msg = 'Data sent: '+ JSON.stringify($scope.result);
+        //var t = new data_processor();
+        //$scope.myJsonContents = t.$get({x: $scope.measurements.x, y: $scope.measurements.y, z: $scope.measurements.z});
+        //$scope.recentTransactions = t.$getRecent();
+        //$scope.transactions = t.$get({x: $scope.measurements.x, y: $scope.measurements.y, z: $scope.measurements.z });
 
          $scope.upload_data($scope.measurements);
 
@@ -116,9 +134,11 @@ angular.module('starter.controllers', ['ngCordova',
 	function set_initial_data() {
 	  ctx.canvas.width = window.innerWidth - 10;
       ctx.canvas.height = window.innerHeight / 2;
-	  $scope.road_data.push([0, 100]);
-	  $scope.last_hit =  [0, 100];
-	  $scope.first_hit = [0, 100];
+	  var centeredHeight = ctx.canvas.height / 2;
+	  
+	  $scope.road_data.push([0, centeredHeight]);
+	  $scope.last_hit =  [0, centeredHeight];
+	  $scope.first_hit = [0, centeredHeight];
 	}
 
 	var canvas  = document.getElementById("canvas");
@@ -150,7 +170,7 @@ angular.module('starter.controllers', ['ngCordova',
 	}
 
 	$scope.upload_data = function(measurements) {
-		$scope.road_data.push([$scope.x+1, parseInt(measurements.z*3)+$scope.road_data[0][1]]);
+		$scope.road_data.push([$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1]]);
 	}
 
 	$scope.start_attack = function() {
@@ -159,9 +179,10 @@ angular.module('starter.controllers', ['ngCordova',
 	}
 
 	function iterate_for_drawing() {
-	  ctx.beginPath();
+	  
 	  for (var x = 0; x < $scope.road_data.length; x++) {
-	    
+	  	  ctx.beginPath();
+	  	  ctx.strokeStyle='#EF233C';
 	      if(x > 0) {
 	        if(x == $scope.road_data.length-1 && $scope.x >= $scope.road_data[x][0]) {
 	          var last_data = $scope.road_data[x];
@@ -176,15 +197,19 @@ angular.module('starter.controllers', ['ngCordova',
 	      } else {
 	        var road_data = $scope.road_data[0];
 	        if($scope.road_data.length > 1) {
-	  var first_road = $scope.road_data[1];
+	  		  var first_road = $scope.road_data[1];
 	          draw(road_data[0], road_data[1], first_road[0], first_road[1]);
 	        } else {
+	          
 	          draw(road_data[0], road_data[1], $scope.x, road_data[1]);
 	        }
 
 	      }
+	      ctx.lineWidth=4;
+		  ctx.lineCap = 'round';
+		  ctx.stroke();
 	}
-	ctx.stroke();
+	
 	}
 
 	function draw(x_start, y_start, x_end, y_end) {
