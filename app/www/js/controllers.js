@@ -160,11 +160,23 @@ angular.module('starter.controllers', ['ngCordova',
       var last = $scope.road_data.length-1;
       if($scope.road_data[last][2] != 'added') {
         $scope.road_data.push([$scope.x-2, $scope.road_data[0][1]]);
-        start_dump = [$scope.x-2, $scope.road_data[0][1]];
+        
+        if(measurements.z > 0.5 || measurements.z < -0.5) {
+	      dumb_draw = true;
+	      start_dump = [$scope.x-2, $scope.road_data[0][1]];
+	    } else {
+	      dumb_draw = false;
+	      if(start_dump.length > 0 && end_dump.length) {
+	      	dumps_array.push([start_dump, end_dump]);
+		      start_dump = [];
+		      end_dump = [];
+	      }
+	      
+	    }
       }
       $scope.road_data.push([$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1], 'added']);
       end_dump = [$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1], 'added'];
-      if(measurements.z > 2 || measurements.z < 2) {
+      if(measurements.z > 0.5 || measurements.z < -0.5) {
         dumb_draw = true;
       }
   }
@@ -234,6 +246,8 @@ angular.module('starter.controllers', ['ngCordova',
 	            end_dump = [$scope.x, $scope.road_data[0][1]];
 	            dumb_draw = false;
 	            dumps_array.push([start_dump, end_dump]);
+	            start_dump = [];
+	            end_dump = [];
 	          }
 	        clear_canvas();
 	        $scope.x+=4;
