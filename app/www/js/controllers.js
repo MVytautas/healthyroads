@@ -1,16 +1,13 @@
-angular.module('starter.controllers', ['ngCordova'])
+angular.module('starter.controllers', ['ngCordova',
+                                        'starter.services'])
 
 .controller('MapCtrl', function($scope) {
 
 })
 
-.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion) {
+.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings) {
   // watch Acceleration options
-  $scope.options = { 
-      frequency: 100, // Measure every 100ms
-      deviation : 25  // We'll use deviation to determine the shake event, best values in the range between 25 and 30
-  };
-   
+  $scope.options = settings.getOptions();
   // Current measurements
   $scope.measurements = {
       x : null,
@@ -94,6 +91,11 @@ angular.module('starter.controllers', ['ngCordova'])
 
 })
 
-.controller('SettingsCtrl', function($scope) {
-
-});
+.controller('SettingsCtrl', ['$scope', 'settings', function($scope, settings) {
+  $scope.frequency = settings.getFrequncy();  
+  $scope.deviation = settings.getDiviation();
+  $scope.setOptions = function() {
+    settings.setFrequency($scope.frequency); 
+    settings.setDeviation($scope.deviation); 
+  };  
+}]);

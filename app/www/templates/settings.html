@@ -1,7 +1,14 @@
 <ion-view view-title="Settings">
   <ion-content>
     <ion-list>
-    user view
+        <label class="item item-input">
+          <span class="input-label">Frequency:</span>
+          <input type="number" ng-model="frequency" ng-change="setOptions()">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Deviation</span>
+          <input type="number" ng-model="deviation" ng-change="setOptions()">
+        </label>
     </ion-list>
   </ion-content>
 </ion-view>
