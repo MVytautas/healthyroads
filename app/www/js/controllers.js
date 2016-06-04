@@ -6,8 +6,6 @@ angular.module('starter.controllers', ['ngCordova',
 })
 
 .controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval, $rootScope, $http) {
-  // watch Acceleration options
-  $scope.options = settings.getOptions();
   // Current measurements
   $scope.measurements = {
       x : null,
@@ -28,8 +26,7 @@ angular.module('starter.controllers', ['ngCordova',
   $scope.startWatching = function() {     
    
       // Device motion configuration
-      $scope.watch = $cordovaDeviceMotion.watchAcceleration($scope.options);
-
+      $scope.watch = $cordovaDeviceMotion.watchAcceleration(settings.getOptions());
       // Device motion initilaization
       $scope.watch.then(null, function(error) {
           console.log('Error');
@@ -84,9 +81,9 @@ angular.module('starter.controllers', ['ngCordova',
           measurementsChange.y = Math.abs($scope.previousMeasurements.y, result.y);
           measurementsChange.z = Math.abs($scope.previousMeasurements.z, result.z);
       }
-   
+      opt = settings.getOptions();
       // If measurement change is bigger then predefined deviation
-      if (measurementsChange.x + measurementsChange.y + measurementsChange.z > $scope.options.deviation) {
+      if (measurementsChange.x + measurementsChange.y + measurementsChange.z > opt.deviation) {
           $scope.stopWatching();  // Stop watching because it will start triggering like hell
           console.log('Shake detected'); // shake detected
           setTimeout($scope.startWatching(), 1000);  // Again start watching after 1 sex
@@ -112,8 +109,6 @@ angular.module('starter.controllers', ['ngCordova',
   // Options update event handler
   $rootScope.$on('options_update', function(evt) {
       $scope.options = settings.getOptions();
-      $scope.watch = $cordovaDeviceMotion.watchAcceleration($scope.options);
-      $scope.$digest();
   });
 
 
@@ -205,7 +200,7 @@ angular.module('starter.controllers', ['ngCordova',
 	        }
 
 	      }
-	      ctx.lineWidth=4;
+	      ctx.lineWidth=2;
 		  ctx.lineCap = 'round';
 		  ctx.stroke();
 	}

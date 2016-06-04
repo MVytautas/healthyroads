@@ -15,7 +15,11 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
-    "cordova-plugin-device"
+    "cordova-plugin-device",
+    {
+      "locator": "https://github.com/apache/cordova-plugin-whitelist.git",
+      "id": "cordova-plugin-whitelist"
+    }
   ],
   "cordovaPlatforms": []
 }
