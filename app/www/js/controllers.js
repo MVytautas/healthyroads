@@ -5,7 +5,11 @@ angular.module('starter.controllers', ['ngCordova',
 
 })
 
+<<<<<<< Updated upstream
 .controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval) {
+=======
+.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion,$http) {
+>>>>>>> Stashed changes
   // watch Acceleration options
   $scope.options = settings.getOptions();
   // Current measurements
@@ -41,6 +45,24 @@ angular.module('starter.controllers', ['ngCordova',
           $scope.measurements.z = result.z;
           $scope.measurements.timestamp = result.timestamp;                 
          // TODO send data to service
+         $scope.coolFunction = function() {
+            $http.post('/Users/Vytautas/node-workshop/02-exercises/01-db/badroads/app', $scope.result).then(function(data) {
+              console.log("I am here");
+              $scope.msg = 'Data saved';
+            });
+            console.log("json add");
+            $scope.msg = 'Data sent: '+ JSON.stringify($scope.result);
+          };
+
+          $scope.$on('eventFired', function(event, data) {
+            $scope.coolFunction();
+          })
+
+        //$scope.msg = 'Data sent: '+ JSON.stringify($scope.result);
+        //var t = new data_processor();
+        //$scope.myJsonContents = t.$get({x: $scope.measurements.x, y: $scope.measurements.y, z: $scope.measurements.z});
+        //$scope.recentTransactions = t.$getRecent();
+        //$scope.transactions = t.$get({x: $scope.measurements.x, y: $scope.measurements.y, z: $scope.measurements.z });
 
          $scope.upload_data($scope.measurements);
 
