@@ -2,12 +2,14 @@
 
 ## Workflow
 
-1. Clone git repository
-2. Make a new branch with a name of your feature/fix
+1. Prepare your environment
+  * ```cd app```
+  * ```ionic serve```
+2. Checkout a new branch with a name of your feature/fix from **master**
 3. Work on your branch (but don't rebase commits from master)
-4. Make a Pull Request
+4. Make a Pull Request to the **master**
 5. Ask somebody to review and merge it
-6. Resolve conflicts
+6. Resolve conflicts, if they exist
 7. Test and be happy ;)
 
 ### How to install ionic
