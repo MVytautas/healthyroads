@@ -145,7 +145,7 @@ angular.module('starter.controllers', ['ngCordova',
 	}
 
 	$scope.upload_data = function(measurements) {
-		$scope.road_data.push([$scope.x+1, parseInt(measurements.z)+$scope.road_data[0][1]]);
+		$scope.road_data.push([$scope.x+1, parseInt(measurements.z*3)+$scope.road_data[0][1]]);
 	}
 
 	$scope.start_attack = function() {
