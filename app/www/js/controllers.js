@@ -111,9 +111,11 @@ angular.module('starter.controllers', ['ngCordova',
 	function set_initial_data() {
 	  ctx.canvas.width = window.innerWidth - 10;
       ctx.canvas.height = window.innerHeight / 2;
-	  $scope.road_data.push([0, 100]);
-	  $scope.last_hit =  [0, 100];
-	  $scope.first_hit = [0, 100];
+	  var centeredHeight = ctx.canvas.height / 2;
+	  
+	  $scope.road_data.push([0, centeredHeight]);
+	  $scope.last_hit =  [0, centeredHeight];
+	  $scope.first_hit = [0, centeredHeight];
 	}
 
 	var canvas  = document.getElementById("canvas");
@@ -157,7 +159,7 @@ angular.module('starter.controllers', ['ngCordova',
 	  
 	  for (var x = 0; x < $scope.road_data.length; x++) {
 	  	  ctx.beginPath();
-	  	  ctx.strokeStyle='#ec5840';
+	  	  ctx.strokeStyle='#EF233C';
 	      if(x > 0) {
 	        if(x == $scope.road_data.length-1 && $scope.x >= $scope.road_data[x][0]) {
 	          var last_data = $scope.road_data[x];
@@ -180,7 +182,7 @@ angular.module('starter.controllers', ['ngCordova',
 	        }
 
 	      }
-	      ctx.lineWidth=5;
+	      ctx.lineWidth=4;
 		  ctx.lineCap = 'round';
 		  ctx.stroke();
 	}
