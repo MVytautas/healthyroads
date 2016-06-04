@@ -5,11 +5,7 @@ angular.module('starter.controllers', ['ngCordova',
 
 })
 
-<<<<<<< Updated upstream
-.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval) {
-=======
-.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion,$http) {
->>>>>>> Stashed changes
+.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval, $http) {
   // watch Acceleration options
   $scope.options = settings.getOptions();
   // Current measurements
