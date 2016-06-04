@@ -94,17 +94,25 @@ angular.module('starter.controllers', ['ngCordova',
 
 
 
-
+	$(window).on("resize.doResize", function (){
+      $scope.$apply(function(){
+        ctx.canvas.width = window.innerWidth - 10;
+        ctx.canvas.height = window.innerHeight - 100;
+      });
+    });
 
 
 
 	$scope.x = 0;
+	$scope.offset = 0;
 	$scope.attacking = true;
 	$scope.road_data = [];
 	$scope.first_hit = [];
 	$scope.last_hit = [];
 
 	function set_initial_data() {
+	  ctx.canvas.width = window.innerWidth - 10;
+      ctx.canvas.height = window.innerHeight - 100;
 	  $scope.road_data.push([0, 100]);
 	  $scope.last_hit =  [0, 100];
 	  $scope.first_hit = [0, 100];
@@ -155,8 +163,8 @@ angular.module('starter.controllers', ['ngCordova',
 	        if(x == $scope.road_data.length-1 && $scope.x >= $scope.road_data[x][0]) {
 	          var last_data = $scope.road_data[x];
 	          var over_last_data = $scope.road_data[x-1];
-	  draw(last_data[0], last_data[1], $scope.x, $scope.road_data[0][1]);
-	  draw(over_last_data[0], over_last_data[1], last_data[0], last_data[1]);
+			  draw(last_data[0], last_data[1], $scope.x, $scope.road_data[0][1]);
+			  draw(over_last_data[0], over_last_data[1], last_data[0], last_data[1]);
 	        } else if($scope.x >= $scope.road_data[x-1][0]) {
 	          var last_road = $scope.road_data[x-1];
 	          var road_data = $scope.road_data[x];
@@ -177,8 +185,8 @@ angular.module('starter.controllers', ['ngCordova',
 	}
 
 	function draw(x_start, y_start, x_end, y_end) {
-	  ctx.moveTo(x_start, y_start);
-	  ctx.lineTo(x_end, y_end);
+	  ctx.moveTo(x_start-$scope.offset, y_start);
+	  ctx.lineTo(x_end-$scope.offset, y_end);
 	}
 
 	function start_animation_loop() {
@@ -190,7 +198,10 @@ angular.module('starter.controllers', ['ngCordova',
 
 	function animate() {
 	  if($scope.attacking == true) {
-	    clear_canvas();
+	  	  if($scope.x > window.innerWidth/2) {
+	  	  	$scope.offset++;
+	  	  }
+	      clear_canvas();
 	      $scope.x++;
 	      iterate_for_drawing();
 	  }
