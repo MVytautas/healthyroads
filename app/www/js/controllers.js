@@ -97,11 +97,9 @@ angular.module('starter.controllers', ['ngCordova',
 	$(window).on("resize.doResize", function (){
       $scope.$apply(function(){
         ctx.canvas.width = window.innerWidth - 10;
-        ctx.canvas.height = window.innerHeight - 100;
+        ctx.canvas.height = window.innerHeight - window.innerHeight / 2;
       });
     });
-
-
 
 	$scope.x = 0;
 	$scope.offset = 0;
@@ -112,7 +110,7 @@ angular.module('starter.controllers', ['ngCordova',
 
 	function set_initial_data() {
 	  ctx.canvas.width = window.innerWidth - 10;
-      ctx.canvas.height = window.innerHeight - 100;
+      ctx.canvas.height = window.innerHeight / 2;
 	  $scope.road_data.push([0, 100]);
 	  $scope.last_hit =  [0, 100];
 	  $scope.first_hit = [0, 100];
