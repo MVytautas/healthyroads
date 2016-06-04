@@ -125,6 +125,9 @@ angular.module('starter.controllers', ['ngCordova',
 	$scope.road_data = [];
 	$scope.first_hit = [];
 	$scope.last_hit = [];
+    var clicked = false;
+    var selected_frame = 0;
+    var dumb_data = [-5, 6, -7, 5, 5, -9, 5, -3, 3, 3, 6, 9, 12, 18, 19, 20, 20, 20, 20, 20];
 
 	function set_initial_data() {
 	  ctx.canvas.width = window.innerWidth - 10;
@@ -140,64 +143,49 @@ angular.module('starter.controllers', ['ngCordova',
 	var ctx = canvas.getContext("2d");
 
 	$scope.click = function() {
-	  $scope.road_data.push([$scope.x+5, 100]);
-	  $scope.road_data.push([$scope.x+6, 105]);
-	  $scope.road_data.push([$scope.x+7, 105]);
-	  $scope.road_data.push([$scope.x+8, 110]);
-	  $scope.road_data.push([$scope.x+9, 110]);
-	  $scope.road_data.push([$scope.x+10, 110]);
-	  $scope.road_data.push([$scope.x+11, 113]);
-	  $scope.road_data.push([$scope.x+12, 113]);
-	  $scope.road_data.push([$scope.x+13, 115]);
-	  $scope.road_data.push([$scope.x+14, 115]);
-	  $scope.road_data.push([$scope.x+15, 115]);
-	  $scope.road_data.push([$scope.x+16, 117]);
-	  $scope.road_data.push([$scope.x+17, 117]);
-	  $scope.road_data.push([$scope.x+18, 115]);
-	  $scope.road_data.push([$scope.x+19, 114]);
-	  $scope.road_data.push([$scope.x+20, 112]);
-	  $scope.road_data.push([$scope.x+21, 112]);
-	  $scope.road_data.push([$scope.x+22, 112]);
-	  $scope.road_data.push([$scope.x+23, 110]);
-	  $scope.road_data.push([$scope.x+24, 107]);
-	  $scope.road_data.push([$scope.x+25, 103]);
-	  $scope.road_data.push([$scope.x+26, 100]);
+      clicked = true;
+      selected_frame = $scope.x;
+      console.log('a')
 	}
 
 	$scope.upload_data = function(measurements) {
-		$scope.road_data.push([$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1]]);
+	    var last = $scope.road_data.length-1;
+	    if($scope.road_data[last][2] != 'added') {
+	      $scope.road_data.push([$scope.x-2, $scope.road_data[0][1]]);
+	    }
+	    $scope.road_data.push([$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1], 'added']);
 	}
 
 	$scope.start_attack = function() {
-	  console.log($scope.road_data, $scope.last_hit, $scope.first_hit, $scope.x);
 	  $scope.attacking = !$scope.attacking;
 	}
 
-	function iterate_for_drawing() {
-	  
-	  for (var x = 0; x < $scope.road_data.length; x++) {
-	  	  ctx.beginPath();
-	  	  ctx.strokeStyle='#EF233C';
-	      if(x > 0) {
-	        if(x == $scope.road_data.length-1 && $scope.x >= $scope.road_data[x][0]) {
-	          var last_data = $scope.road_data[x];
-	          var over_last_data = $scope.road_data[x-1];
-			  draw(last_data[0], last_data[1], $scope.x, $scope.road_data[0][1]);
-			  draw(over_last_data[0], over_last_data[1], last_data[0], last_data[1]);
-	        } else if($scope.x >= $scope.road_data[x-1][0]) {
-	          var last_road = $scope.road_data[x-1];
-	          var road_data = $scope.road_data[x];
-	          draw(last_road[0], last_road[1], road_data[0], road_data[1]);
-	      }
-	      } else {
-	        var road_data = $scope.road_data[0];
-	        if($scope.road_data.length > 1) {
-	  		  var first_road = $scope.road_data[1];
-	          draw(road_data[0], road_data[1], first_road[0], first_road[1]);
-	        } else {
-	          
-	          draw(road_data[0], road_data[1], $scope.x, road_data[1]);
+
+  function iterate_for_drawing() {
+    for (var x = 0; x < $scope.road_data.length; x++) {
+	        ctx.beginPath();
+	        ctx.strokeStyle='#EF233C';
+	        if(x > 0) {
+	          if(x == $scope.road_data.length-1 && $scope.x >= $scope.road_data[x][0]) {
+	            var last_data = $scope.road_data[x];
+	            var over_last_data = $scope.road_data[x-1];
+	        draw(over_last_data[0], over_last_data[1], last_data[0], last_data[1]);
+	        if(last_data[1] == $scope.road_data[0][1]) {
+	          draw(last_data[0], last_data[1], $scope.x, $scope.road_data[0][1]);
 	        }
+	          } else if($scope.x >= $scope.road_data[x-1][0]) {
+	            var last_road = $scope.road_data[x-1];
+	            var road_data = $scope.road_data[x];
+	            draw(last_road[0], last_road[1], road_data[0], road_data[1]);
+	          }
+	        } else {
+	          var road_data = $scope.road_data[0];
+	          if($scope.road_data.length > 1) {
+	          var first_road = $scope.road_data[1];
+	            draw(road_data[0], road_data[1], first_road[0], first_road[1]);
+	          } else {
+	            draw(road_data[0], road_data[1], $scope.x, road_data[1]);
+	          }
 
 	      }
 	      ctx.lineWidth=2;
@@ -222,14 +210,30 @@ angular.module('starter.controllers', ['ngCordova',
 	function animate() {
 	  if($scope.attacking == true) {
 	  	  if($scope.x > window.innerWidth/2) {
-	  	  	$scope.offset++;
+	  	  	$scope.offset+=4;
 	  	  }
+	  	  if(clicked == true) {
+	          add_dumb_data();
+	        }
+	        var last = $scope.road_data.length-1;
+	        if($scope.road_data[last][2] == 'added' && $scope.road_data[last][0] < $scope.x-1) {
+	          $scope.road_data.push([$scope.x, $scope.road_data[0][1]]);
+	        }
 	      clear_canvas();
-	      $scope.x++;
+	      $scope.x+=4;
 	      iterate_for_drawing();
 	  }
 	    
 	}
+
+	  function add_dumb_data() {
+	    if(dumb_data.length > $scope.x-selected_frame) {
+	      var data = dumb_data[$scope.x-selected_frame];
+	      $scope.upload_data({z: data});
+	    } else {
+	      clicked = false;
+	    }
+	  }
 
 	function clear_canvas() {
 	    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
