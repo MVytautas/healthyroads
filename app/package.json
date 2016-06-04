@@ -17,5 +17,7 @@
   "cordovaPlugins": [
     "cordova-plugin-device"
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "android"
+  ]
 }
