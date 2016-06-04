@@ -282,6 +282,7 @@ angular.module('starter.controllers', ['ngCordova',
 .controller('SettingsCtrl', ['$scope', 'settings', '$rootScope', function($scope, settings, $rootScope) {
   $scope.frequency = settings.getFrequency();  
   $scope.deviation = settings.getDiviation();
+  $scope.funMode = settings.getFunMode();
 
   $scope.setFrquency = function(frq) {
     console.log(frq);
@@ -292,6 +293,12 @@ angular.module('starter.controllers', ['ngCordova',
   $scope.setDiv = function(div) {
     console.log(div);
     settings.setDiviation(div);
+    $rootScope.$broadcast('options_update');
+  }
+  
+  $scope.setFunMode = function(funMode) {
+    console.log(funMode);
+    settings.setFunMode(funMode);
     $rootScope.$broadcast('options_update');
   }
 

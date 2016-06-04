@@ -97,3 +97,16 @@ ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.activated {
 .button.activated {
   color: #2B2D42;
 }
+
+.toggle input:checked + .track {
+  background-color: #EF233C;
+  border-color: #EF233C;
+}
+
+.fun-mode {
+  display: block;
+  font-size: 85px;
+  top: 33%;
+  right: 11%;
+  position: absolute;
+}

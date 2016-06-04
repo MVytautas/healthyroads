@@ -28,7 +28,8 @@ angular.module('starter.services', [])
   // Frequency default 100
   var options = { 
       frequency: 100, // Measure every 100ms
-      deviation : 25  // We'll use deviation to determine the shake event, best values in the range between 25 and 30
+      deviation: 25,  // We'll use deviation to determine the shake event, best values in the range between 25 and 30
+      funMode: false  // Fun mode is just a fun mode, period
   };
   return {
     setFrequency : function(frqncy) {
@@ -45,6 +46,12 @@ angular.module('starter.services', [])
     },
     getDiviation : function() {
       return options.deviation;
-    } 
+    },
+    setFunMode : function(funMode) {
+      options.funMode = funMode;
+    },
+    getFunMode : function() {
+      return options.funMode;
+    }
   }
 }]);
