@@ -7,9 +7,9 @@ angular.module('starter.services', [])
   // $rootScope.$on('data_processor:data_in', function(evt) {      
   // });
 
-  $rootScope.$broadcast('eventFired', {
-                data: 'something'
-            });
+  // $rootScope.$broadcast('eventFired', {
+  //               data: 'something'
+  //           });
 
   return {
     //return $resource('/:myFile.json', {myFile: '@file'});

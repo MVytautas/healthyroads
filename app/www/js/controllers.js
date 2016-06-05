@@ -80,9 +80,9 @@ angular.module('starter.controllers', ['ngCordova',
           data_json.z = result.z;
           data_json.ts = result.timestamp;
 
-          console.log(JSON.stringify(data_json));
+        console.log(JSON.stringify(data_json));
          // TODO send data to service
-         calculateAverage(result.z);
+         //calculateAverage(result.z);
          $scope.coolFunction = function() {
             $http.post('/Users/Vytautas/node-workshop/02-exercises/01-db/badroads/app', $scope.result).then(function(data) {
               console.log("I am here");
@@ -96,9 +96,9 @@ angular.module('starter.controllers', ['ngCordova',
             $scope.coolFunction();
           })
 
-         $scope.calculateAverage = function(data){ 
-            data_processor.add_data(data);
-          };
+         // $scope.calculateAverage = function(data){ 
+         //    data_processor.add_data(data);
+         //  };
 
         //$scope.msg = 'Data sent: '+ JSON.stringify($scope.result);
         //var t = new data_processor();
