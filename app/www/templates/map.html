@@ -1,7 +1,10 @@
 <ion-view view-title="Map">
   <ion-content>
     <ion-list>
-    map view
+       <openlayers ol-center="london" custom-layers="true" height="400px">
+            <ol-layer ol-layer-properties="mapbox"></ol-layer>
+            <ol-layer ol-layer-properties="osm"></ol-layer>
+        </openlayers>
     </ion-list>
   </ion-content>
 </ion-view>
