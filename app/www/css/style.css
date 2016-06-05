@@ -106,16 +106,12 @@ ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.activated {
 .fun-mode {
   display: block;
   font-size: 85px;
-  top: -100%;
+  top: 0;
   right: 5px;
   max-width: 45%;
   position: absolute;
-  -webkit-transition: all 1s ease-in-out;
-  -moz-transition: all 1s ease-in-out;
-  -o-transition: all 1s ease-in-out;
-  transition: all 1s ease-in-out;
 }
 
 .fun-mode.has-peak {
-  top: -25%;
+  top: -10%;
 }
