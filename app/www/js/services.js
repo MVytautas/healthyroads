@@ -54,4 +54,17 @@ angular.module('starter.services', [])
       return options.funMode;
     }
   }
-}]);
+}])
+.factory('map', function() {
+  var markers = [];
+    return {
+    addMarkers : function(la, lo) {
+      markers.append(
+      {
+        name: la,
+        lat: la,
+        lon: lo
+      })
+    }
+  }
+});

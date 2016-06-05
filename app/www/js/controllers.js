@@ -3,12 +3,23 @@ angular.module('starter.controllers', ['ngCordova',
                                         'openlayers-directive'])
 
 .controller('MapCtrl', function($scope) {
+  var markers = [
+      {
+        name: 'LFactory',
+        lat: 54.708001,
+        lon: 25.270608
+      }
+  ];
+  /*proj4.defs(
+  'EPSG:3346',
+  '+proj=tmerc +lat_0=0 +lon_0=24 +k=0.9998 +x_0=500000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +axis=neu');*/
   angular.extend($scope, {
-    london: {
+    linkmenu_factory: {
         lat: 54.708001,
         lon: 25.270608,
         zoom: 16
     },
+    markers: markers,
     osm: {
         visible: true,
         opacity: 0.5,

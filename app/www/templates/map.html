@@ -1,7 +1,8 @@
 <ion-view view-title="Map">
   <ion-content>
     <ion-list>
-       <openlayers ol-center="london" custom-layers="true" height="400px">
+       <openlayers ol-center="linkmenu_factory" custom-layers="true" height="400px">
+            <ol-marker ng-repeat="marker in markers" lat="marker.lat" lon="marker.lon"></ol-marker>
             <ol-layer ol-layer-properties="mapbox"></ol-layer>
             <ol-layer ol-layer-properties="osm"></ol-layer>
         </openlayers>
