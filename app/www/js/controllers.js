@@ -33,12 +33,20 @@ angular.module('starter.controllers', ['ngCordova',
       $scope.watch.then(null, function(error) {
           console.log('Error');
       }, function(result) {
-
+          var data_json = {'x': '', 'y':'', 'z':'', 'ts':''};
           // DATA FROM ACCELEROMETER 
           $scope.measurements.x = result.x;
           $scope.measurements.y = result.y;
           $scope.measurements.z = result.z;
-          $scope.measurements.timestamp = result.timestamp;                 
+          $scope.measurements.timestamp = result.timestamp;
+
+          // Attach data to js obj
+          data_json.x = result.x;
+          data_json.y = result.y;
+          data_json.z = result.z;
+          data_json.ts = result.timestamp;
+
+          console.log(JSON.stringify(data_json));
          // TODO send data to service
          $scope.coolFunction = function() {
             $http.post('/Users/Vytautas/node-workshop/02-exercises/01-db/badroads/app', $scope.result).then(function(data) {
@@ -91,6 +99,8 @@ angular.module('starter.controllers', ['ngCordova',
       if (measurementsChange.x + measurementsChange.y + measurementsChange.z > opt.deviation) {
           $scope.stopWatching();  // Stop watching because it will start triggering like hell
           console.log('Shake detected'); // shake detected
+          // Broadcast shake detected event
+          $rootScope.$broadcast('shake_detected');
           setTimeout($scope.startWatching(), 1000);  // Again start watching after 1 sex
    
           // Clean previous measurements after succesfull shake detection, so we can do it next time
