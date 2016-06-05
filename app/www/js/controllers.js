@@ -161,7 +161,7 @@ angular.module('starter.controllers', ['ngCordova',
       if($scope.road_data[last][2] != 'added') {
         $scope.road_data.push([$scope.x-2, $scope.road_data[0][1]]);
         
-        if(measurements.z > 13 || measurements.z < 7) {
+        if(measurements.z > 11 || measurements.z < 9) {
 	      dumb_draw = true;
 	      start_dump = [$scope.x-2, $scope.road_data[0][1]];
 	    } else {
@@ -176,7 +176,7 @@ angular.module('starter.controllers', ['ngCordova',
       }
       $scope.road_data.push([$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1], 'added']);
       end_dump = [$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1], 'added'];
-      if(measurements.z > 13 || measurements.z < 7) {
+      if(measurements.z > 11 || measurements.z < 9) {
         dumb_draw = true;
       }
   }
