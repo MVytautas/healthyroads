@@ -1,12 +1,35 @@
 angular.module('starter.controllers', ['ngCordova',
-                                        'starter.services'])
+                                        'starter.services',
+                                        'openlayers-directive'])
 
 .controller('MapCtrl', function($scope) {
-
+  angular.extend($scope, {
+    london: {
+        lat: 54.708001,
+        lon: 25.270608,
+        zoom: 17
+    },
+    osm: {
+        visible: true,
+        opacity: 0.5,
+        source: {
+            type: 'OSM'
+        }
+    },
+    mapbox: {
+        visible: true,
+        opacity: 0.5,
+        source: {
+            type: 'TileJSON',
+            url: 'http://api.tiles.mapbox.com/v3/mapbox.geography-class.jsonp'
+        }
+    }
+  });
 })
 
-.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval, $rootScope, $http) {
+.controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval, $rootScope, $http, data_processor) {
   // Current measurements
+  $scope.avarage = 0;
   console.log("Activity controller init ");
   $scope.measurements = {
       x : null,
@@ -48,6 +71,7 @@ angular.module('starter.controllers', ['ngCordova',
 
           console.log(JSON.stringify(data_json));
          // TODO send data to service
+         calculateAverage(result.z);
          $scope.coolFunction = function() {
             $http.post('/Users/Vytautas/node-workshop/02-exercises/01-db/badroads/app', $scope.result).then(function(data) {
               console.log("I am here");
@@ -60,6 +84,10 @@ angular.module('starter.controllers', ['ngCordova',
           $scope.$on('eventFired', function(event, data) {
             $scope.coolFunction();
           })
+
+         $scope.calculateAverage = function(data){ 
+            data_processor.add_data(data);
+          };
 
         //$scope.msg = 'Data sent: '+ JSON.stringify($scope.result);
         //var t = new data_processor();
