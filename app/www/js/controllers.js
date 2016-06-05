@@ -137,6 +137,7 @@ angular.module('starter.controllers', ['ngCordova',
     var selected_frame = 0;
     var dumb_draw = false;
     var dumb_data = [-5, 6, -7, 5, 5, -9, 5, -3, 3, 3, 6, -9, -12, -18, -19, -20, -20, -20, -20, -20];
+    var dump_coordinats = [];
 
   function set_initial_data() {
     ctx.canvas.width = window.innerWidth - 10;
@@ -157,27 +158,30 @@ angular.module('starter.controllers', ['ngCordova',
 	}
 
   $scope.upload_data = function(measurements) {
+      var z = measurements.z;
       var last = $scope.road_data.length-1;
       if($scope.road_data[last][2] != 'added') {
         $scope.road_data.push([$scope.x-2, $scope.road_data[0][1]]);
         
-        if(measurements.z > 11 || measurements.z < 9) {
-	      dumb_draw = true;
-	      start_dump = [$scope.x-2, $scope.road_data[0][1]];
-	    } else {
-	      dumb_draw = false;
-	      if(start_dump.length > 0 && end_dump.length > 0) {
-	      	dumps_array.push([start_dump, end_dump]);
-		      start_dump = [];
-		      end_dump = [];
-	      }
-	      
-	    }
+        if(z > 2 || z < -2) {
+          dump_coordinats.push([$scope.x-2, parseInt(z*3)+$scope.road_data[0][1], z]);
+  	      dumb_draw = true;
+  	      start_dump = [$scope.x-2, $scope.road_data[0][1]];
+  	    } else {
+  	      dumb_draw = false;
+  	      if(start_dump.length > 0 && end_dump.length > 0) {
+  	      	dumps_array.push([start_dump, end_dump]);
+  		      start_dump = [];
+  		      end_dump = [];
+  	      }
+  	      
+  	    }
       }
-      $scope.road_data.push([$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1], 'added']);
-      end_dump = [$scope.x-1, parseInt(measurements.z*6)+$scope.road_data[0][1], 'added'];
-      if(measurements.z > 11 || measurements.z < 9) {
+      $scope.road_data.push([$scope.x-1, parseInt(z*3)+$scope.road_data[0][1], 'added']);
+      end_dump = [$scope.x-1, parseInt(z*3)+$scope.road_data[0][1], 'added'];
+      if(z > 2 || z < -2) {
         dumb_draw = true;
+        dump_coordinats.push([$scope.x-2, parseInt(z*3)+$scope.road_data[0][1], z]);
       }
   }
 
@@ -213,7 +217,7 @@ angular.module('starter.controllers', ['ngCordova',
             }
 
           }
-          ctx.lineWidth=2;
+        ctx.lineWidth=2;
         ctx.lineCap = 'round';
         ctx.stroke();
     }
@@ -252,6 +256,7 @@ angular.module('starter.controllers', ['ngCordova',
 	        clear_canvas();
 	        $scope.x+=4;
 	        iterate_dumps();
+          iterate_dump_coordinates();
 	        iterate_for_drawing();
 	    }
 	      
@@ -273,6 +278,15 @@ angular.module('starter.controllers', ['ngCordova',
       ctx.font = "13px Arial";
       ctx.fillStyle='black';
       ctx.fillText("DUMP", start[0]-$scope.offset, start[1]+165);
+    }
+  }
+
+  function iterate_dump_coordinates() {
+    for(var x=0; x<dump_coordinats.length; x++) {
+      coord = dump_coordinats[x];
+      ctx.font = "10px Arial";
+      ctx.fillStyle='black';
+      ctx.fillText(coord[2], coord[0]-$scope.offset, coord[1]);
     }
   }
 
