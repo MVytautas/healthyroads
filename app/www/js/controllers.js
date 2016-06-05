@@ -446,10 +446,12 @@ angular.module('starter.controllers', ['ngCordova',
             if(x == $scope.road_data.length-1 && $scope.x >= $scope.road_data[x][0]) {
               var last_data = $scope.road_data[x];
               var over_last_data = $scope.road_data[x-1];
-          draw(over_last_data[0], over_last_data[1], last_data[0], last_data[1]);
-          if(last_data[1] == $scope.first_hit[1]) {
-            draw(last_data[0], last_data[1], $scope.x, $scope.first_hit[1]);
-          }
+
+              console.log(last_data, over_last_data)
+              draw(over_last_data[0], over_last_data[1], last_data[0], last_data[1]);
+              if(last_data[1] == $scope.first_hit[1]) {
+                draw(last_data[0], last_data[1], $scope.x, $scope.road_data[x][0][1]);
+              }
             } else if($scope.x >= $scope.road_data[x-1][0]) {
               var last_road = $scope.road_data[x-1];
               var road_data = $scope.road_data[x];
@@ -458,7 +460,7 @@ angular.module('starter.controllers', ['ngCordova',
           } else {
             var road_data = $scope.first_hit;
             if($scope.road_data.length > 1) {
-            var first_road = $scope.road_data[1];
+              var first_road = $scope.road_data[1];
               draw(road_data[0], road_data[1], first_road[0], first_road[1]);
             } else {
               draw(road_data[0], road_data[1], $scope.x, road_data[1]);
@@ -496,13 +498,36 @@ angular.module('starter.controllers', ['ngCordova',
 	        clear_canvas();
 	        $scope.x+=4;
 	        iterate_dumps();
-          iterate_dump_coordinates();
+          // iterate_dump_coordinates();
 	        iterate_for_drawing();
           clear_arrays();
+          concatenate_dumpies();
 	    }
-	      
 	  }
 
+  function concatenate_dumpies() {
+      var temp_array = [];
+      var to_delete = false;
+      for(var x=0; x < dumps_array.length; x++) {
+        if(x == dumps_array.length-1 || dumps_array.length == 1)  {
+          temp_array.push(dumps_array[x]);
+          to_delete = false;
+        } else {
+          var d = dumps_array[x];
+          var d1 = dumps_array[x+1];
+          if((d1[1][0] - d[0][0]) <= 40 && to_delete == false) {
+            temp_array.push([d[0], d1[1]]);
+            to_delete = true;
+          } else if (to_delete == true) {
+            to_delete = false;
+          } else {
+            temp_array.push(d);
+            to_delete = false;
+          }
+        } 
+      }
+      dumps_array = temp_array;
+  }
 
   function clear_arrays() {
     var width = window.innerWidth/2;
@@ -515,8 +540,6 @@ angular.module('starter.controllers', ['ngCordova',
     if(dump_coordinats.length > 0 && dump_coordinats[0][0] < $scope.offset) {
       dump_coordinats.shift();
     }
-    
-
   }
 
   function iterate_dumps() {
@@ -532,7 +555,7 @@ angular.module('starter.controllers', ['ngCordova',
 
       ctx.font = "13px Arial";
       ctx.fillStyle='black';
-      ctx.fillText("D", start[0]-$scope.offset, start[1]+165);
+      ctx.fillText("D", start[0]-$scope.offset, 220);
     }
   }
 
