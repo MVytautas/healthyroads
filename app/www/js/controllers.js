@@ -7,7 +7,7 @@ angular.module('starter.controllers', ['ngCordova',
     london: {
         lat: 54.708001,
         lon: 25.270608,
-        zoom: 17
+        zoom: 16
     },
     osm: {
         visible: true,
