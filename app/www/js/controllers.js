@@ -39,9 +39,10 @@ angular.module('starter.controllers', ['ngCordova',
 })
 
 .controller('ActivityCtrl', function($scope, $cordovaDeviceMotion, settings, $interval, $rootScope, $http, data_processor) {
+  
   // Current measurements
   $scope.avarage = 0;
-  console.log("Activity controller init ");
+
   $scope.measurements = {
       x : null,
       y : null,
@@ -79,36 +80,17 @@ angular.module('starter.controllers', ['ngCordova',
           data_json.y = result.y;
           data_json.z = result.z;
           data_json.ts = result.timestamp;
-
-        console.log(JSON.stringify(data_json));
-         // TODO send data to service
-         //calculateAverage(result.z);
-         $scope.coolFunction = function() {
-            $http.post('/Users/Vytautas/node-workshop/02-exercises/01-db/badroads/app', $scope.result).then(function(data) {
-              console.log("I am here");
-              $scope.msg = 'Data saved';
-            });
-            console.log("json add");
-            $scope.msg = 'Data sent: '+ JSON.stringify($scope.result);
-          };
-
-          $scope.$on('eventFired', function(event, data) {
-            $scope.coolFunction();
-          })
-
-         // $scope.calculateAverage = function(data){ 
-         //    data_processor.add_data(data);
-         //  };
+        // Uncomment if wanna output JSON data to CLI
 
         //$scope.msg = 'Data sent: '+ JSON.stringify($scope.result);
         //var t = new data_processor();
         //$scope.myJsonContents = t.$get({x: $scope.measurements.x, y: $scope.measurements.y, z: $scope.measurements.z});
         //$scope.recentTransactions = t.$getRecent();
         //$scope.transactions = t.$get({x: $scope.measurements.x, y: $scope.measurements.y, z: $scope.measurements.z });
-
-         $scope.upload_data($scope.measurements);
-
-          // Detecta shake  
+          // Call function
+          $scope.upload_data($scope.measurements);
+          
+          // Detecta shake
           $scope.detectShake(result);  
    
       });     
@@ -167,11 +149,11 @@ angular.module('starter.controllers', ['ngCordova',
 
 
   $(window).on("resize.doResize", function (){
-      $scope.$apply(function(){
-        ctx.canvas.width = window.innerWidth - 10;
-        ctx.canvas.height = 270;
-      });
+    $scope.$apply(function() {
+      ctx.canvas.width = window.innerWidth - 10;
+      ctx.canvas.height = 270;
     });
+  });
 
 	$scope.x = 0;
 	$scope.offset = 0;
@@ -380,7 +362,7 @@ angular.module('starter.controllers', ['ngCordova',
 10.739192008972168,
 11.074379920959473,
 10.686519622802734];
-    var dump_coordinats = [];
+  var dump_coordinats = [];
   var dump_refiner = 0;
   function set_initial_data() {
     ctx.canvas.width = window.innerWidth - 10;
@@ -399,8 +381,9 @@ angular.module('starter.controllers', ['ngCordova',
       clicked = true;
       selected_frame = $scope.x;
 	}
-
+  // Upload data
   $scope.upload_data = function(measurements) {
+      debugger;
       var z = measurements.z-10;
       var last = $scope.road_data.length-1;
       if($scope.road_data[last][2] != 'added') {
